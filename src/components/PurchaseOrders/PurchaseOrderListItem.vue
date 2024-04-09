@@ -22,8 +22,14 @@ const toggleSelection = (id) => {
     <td>{{ purchaseOrder.buyer_name }}</td>
     <td>{{ purchaseOrder.total }}</td>
     <td>
-      <a class="btn btn-secondary btn-sm m-1"><i class="bi bi-eye"></i></a>
-      <a class="btn btn-success btn-sm m-1"><i class="bi bi-pen"></i></a>
+      <RouterLink :to="`/purchase-order/${purchaseOrder.id}`" class="btn btn-secondary btn-sm m-1"
+        ><i class="bi bi-eye"></i
+      ></RouterLink>
+      <RouterLink
+        :to="`/purchase-order/${purchaseOrder.id}/edit`"
+        class="btn btn-success btn-sm m-1"
+        ><i class="bi bi-pen"></i
+      ></RouterLink>
       <button class="btn btn-danger btn-sm m-1" @click="deleteOne(purchaseOrder.id)">
         <i class="bi bi-archive"></i>
       </button>

@@ -4,12 +4,19 @@ import useSweetAlert from './useSweetAlert'
 
 export default function usePurchaseOrders() {
   const baseUrl = 'http://127.0.0.1:8000/api'
-  const purchaseOrders = ref([])
   const { flash, confirmAction } = useSweetAlert()
 
+  const purchaseOrders = ref([])
   const getPurchaseOrders = (page = 1) => {
     axios.get(`${baseUrl}/purchase-orders?page=${page}`).then((res) => {
       purchaseOrders.value = res.data
+    })
+  }
+
+  const purchaseOrder = ref([])
+  const getPurchaseOrder = async (id) => {
+    await axios.get(`${baseUrl}/purchase-orders/${id}`).then((res) => {
+      purchaseOrder.value = res.data.data
     })
   }
 
@@ -36,5 +43,12 @@ export default function usePurchaseOrders() {
     })
   }
 
-  return { purchaseOrders, getPurchaseOrders, deleteOne, deleteMany }
+  return {
+    purchaseOrders,
+    getPurchaseOrders,
+    purchaseOrder,
+    getPurchaseOrder,
+    deleteOne,
+    deleteMany
+  }
 }
