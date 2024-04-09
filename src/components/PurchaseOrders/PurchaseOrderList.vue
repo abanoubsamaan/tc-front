@@ -1,20 +1,40 @@
 <script setup>
+import usePurchaseOrders from '@/composables/usePurchaseOrders'
 import PurchaseOrderListItem from './PurchaseOrderListItem.vue'
-import { onMounted, defineProps, ref } from 'vue'
+import { ref, defineProps } from 'vue'
 
-let purchaseOrders = ref([])
-// defineProps(() => {})
-
-onMounted(() => {
-  purchaseOrders.value = ['hey', '1']
-  console.log(purchaseOrders.value)
+defineProps({
+  purchaseOrders: Object,
+  deleteOne: Function,
+  deleteMany: Function
 })
+
+const selectedIds = ref([])
+
+const updateSelectedIds = (id) => {
+  if (selectedIds.value.includes(id)) {
+    // If ID exists, remove it
+    selectedIds.value = selectedIds.value.filter((selectedId) => selectedId !== id)
+  } else {
+    // If ID doesn't exist, add it
+    selectedIds.value.push(id)
+  }
+}
+// const { deleteMany } = usePurchaseOrders()
 </script>
 <template>
   <table class="table table-striped table-hover">
     <thead class="table-light">
       <tr>
-        <td></td>
+        <td>
+          <button
+            v-if="selectedIds.length"
+            class="btn btn-danger btn-sm"
+            @click="deleteMany(selectedIds)"
+          >
+            <i class="bi bi-archive"></i>
+          </button>
+        </td>
         <td>#</td>
         <td>PO number</td>
         <td>Buyer name</td>
@@ -23,7 +43,13 @@ onMounted(() => {
       </tr>
     </thead>
     <tbody>
-      <PurchaseOrderListItem />
+      <PurchaseOrderListItem
+        v-for="purchaseOrder in purchaseOrders"
+        :key="purchaseOrder.id"
+        :purchaseOrder
+        :deleteOne
+        @selected-id="updateSelectedIds"
+      />
     </tbody>
   </table>
 </template>

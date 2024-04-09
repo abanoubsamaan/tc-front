@@ -1,5 +1,14 @@
 <script setup>
+import { Bootstrap5Pagination } from 'laravel-vue-pagination'
 import PurchaseOrderList from '@/components/PurchaseOrders/PurchaseOrderList.vue'
+import usePurchaseOrders from '@/composables/usePurchaseOrders'
+import { onMounted } from 'vue'
+
+let { purchaseOrders, getPurchaseOrders, deleteOne, deleteMany } = usePurchaseOrders()
+
+onMounted(() => {
+  getPurchaseOrders()
+})
 </script>
 
 <template>
@@ -16,24 +25,12 @@ import PurchaseOrderList from '@/components/PurchaseOrders/PurchaseOrderList.vue
       </div>
     </div>
     <div class="card-body">
-      <PurchaseOrderList />
-      <div class="d-flex justify-content-start">
-        <nav>
-          <ul class="pagination">
-            <li class="page-item disabled">
-              <span class="page-link">Previous</span>
-            </li>
-            <li class="page-item"><a class="page-link text-dark" href="#">1</a></li>
-            <li class="page-item active bg-dark" aria-current="page">
-              <span class="page-link">2</span>
-            </li>
-            <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link text-dark" href="#">Next</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <PurchaseOrderList
+        :purchaseOrders="purchaseOrders.data"
+        :deleteMany="deleteMany"
+        :deleteOne="deleteOne"
+      />
+      <Bootstrap5Pagination :data="purchaseOrders" @pagination-change-page="getPurchaseOrders" />
     </div>
   </div>
 </template>
