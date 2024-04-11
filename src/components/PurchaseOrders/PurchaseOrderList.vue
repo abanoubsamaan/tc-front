@@ -1,5 +1,4 @@
 <script setup>
-import usePurchaseOrders from '@/composables/usePurchaseOrders'
 import PurchaseOrderListItem from './PurchaseOrderListItem.vue'
 import { ref, defineProps } from 'vue'
 
@@ -20,8 +19,12 @@ const updateSelectedIds = (id) => {
     selectedIds.value.push(id)
   }
 }
-// const { deleteMany } = usePurchaseOrders()
+
+const resetSelection = () => {
+  selectedIds.value = []
+}
 </script>
+
 <template>
   <table class="table table-striped table-hover">
     <thead class="table-light">
@@ -30,7 +33,7 @@ const updateSelectedIds = (id) => {
           <button
             v-if="selectedIds.length"
             class="btn btn-danger btn-sm"
-            @click="deleteMany(selectedIds)"
+            @click="deleteMany(selectedIds), resetSelection()"
           >
             <i class="bi bi-archive"></i>
           </button>
